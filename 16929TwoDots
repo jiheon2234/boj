@@ -1,0 +1,37 @@
+import sys
+input =sys.stdin.readline
+moves=[(-1,0),(1,0),(0,-1),(0,1)]
+
+def dfs(i,j,c,last_i=None,last_j=None,depth=1):
+    for a,b in moves:
+        tmp_i=i+a
+        tmp_j=j+b
+        
+        if depth>3:
+            if 0<=tmp_i<n and 0<=tmp_j<m and  arr[tmp_i][tmp_j]==c and visited[tmp_i][tmp_j] and (tmp_i != last_i or tmp_j !=last_j):
+                print("Yes")
+                exit()  
+
+        if 0<=tmp_i<n and 0<=tmp_j<m and c==arr[tmp_i][tmp_j] and not visited[tmp_i][tmp_j]:
+            
+            visited[tmp_i][tmp_j]=True 
+            dfs(tmp_i,tmp_j,c,last_i=i,last_j=j,depth= depth+1)
+           
+    return
+
+
+
+
+
+
+n,m=map(int,input().split())
+arr=[list(input().strip())for _ in range(n)]
+visited=[[False for _ in range(m)]for _ in range(n)]
+c_list=[]
+for i in range(n):
+    for j in range(m):
+        if not visited[i][j]:
+            visited[i][j]=True
+            dfs(i,j,c=arr[i][j])
+        
+print('No')
