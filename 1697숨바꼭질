@@ -1,33 +1,30 @@
 from collections import deque
 
-def bfs(i):
+def bfs():
     que=deque()
-    que.append((i,0))
-    
+    que.append(n)
+    arr[n]=0
     while que:
-        tmp,time=que.popleft()
-        arr[tmp]=time
+        tmp=que.popleft()
+        if tmp==k:
+            print(arr[k])
+            exit()
         
-        a,b,c=tmp+1,tmp-1,tmp*2
+    
 
-        for tmptmp in (a,b,c):
-            if tmptmp==k:
-                print(time+1)
-                return
+        for tmptmp in (tmp+1,tmp-1,tmp*2):
+            
             if 0<=tmptmp<100001 and arr[tmptmp]==-1:
-                que.append((tmptmp,time+1))
+                arr[tmptmp]=arr[tmp]+1
+                que.append(tmptmp)
 
 
 
 
 n,k=map(int,input().split())
-
-
 arr=[-1 for _ in range(100001)]
-if n==k:
-    print(0)
-    exit()
-bfs(n)            
+bfs()
+         
 
 
 
