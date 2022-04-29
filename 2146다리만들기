@@ -1,0 +1,67 @@
+import sys
+input=sys.stdin.readline
+from collections import deque
+moves=[(-1,0),(1,0),(0,-1),(0,1)]
+def bfs1(i,j,num): #섬클러스터링
+    
+    que=deque()
+    arr[i][j]=num
+    que.append((i,j))
+    while que:
+        i,j=que.popleft()
+        
+        for a,b in moves:
+            tmp_i,tmp_j=i+a,j+b
+            if 0<=tmp_i<n and 0<=tmp_j<n :
+                if arr[tmp_i][tmp_j]==1:
+                    arr[tmp_i][tmp_j]=num
+                    que.append((tmp_i,tmp_j))
+
+                elif arr[tmp_i][tmp_j]==0:
+                    edge.append((i,j,num,0))
+    return
+
+def dfs2(): #다리놓기
+    global answer
+    queque=deque(edge)
+
+    while queque:
+        i,j,num,cnt=queque.popleft()
+        for a,b in moves:
+            tmp_i,tmp_j=i+a,j+b
+            if 0<=tmp_i<n and 0<=tmp_j<n:
+                if arr[tmp_i][tmp_j]==0:
+                    arr[tmp_i][tmp_j]=num
+                    brigde[tmp_i][tmp_j]=cnt+1
+                    queque.append((tmp_i,tmp_j,num,cnt+1))
+                
+                elif arr[tmp_i][tmp_j]!=num:
+                    answer=min(answer,cnt+brigde[tmp_i][tmp_j]) 
+                    
+                    
+
+    
+
+    
+
+
+
+
+answer=1e+10
+n=int(input())
+arr=[ [* map (int,input().split())]for _ in range(n)]
+brigde=[[False for _ in range(n)]for _ in range(n)]
+num=2
+edge=[]
+for i in range(n):
+    for j in range(n):
+        if arr[i][j]==1:
+            bfs1(i,j,num)
+            num+=1
+        else:
+            continue
+edge=list(set(edge))
+dfs2()
+print(answer)
+
+
