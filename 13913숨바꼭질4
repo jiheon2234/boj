@@ -1,0 +1,54 @@
+from collections import deque
+
+def bfs(n):
+    que=deque()
+    que.append(n)
+    arr[n]=0
+
+    while que:
+        now=que.popleft()
+        
+        for next in (now+1,now-1,now*2):
+                
+            if 0<=next<len(arr) and arr[next]==-1:
+                arr[next]=arr[now]+1
+                last_visit[next]=now
+                if next==k: 
+                    return
+                que.append((next))
+
+
+    
+
+
+
+
+
+
+
+n,k=map(int,input().split())
+if n==k: 
+    print(0)
+    print(n)
+    exit()
+arr=[-1 for _ in range(200001)]
+last_visit=arr.copy()
+
+bfs(n)
+print(arr[k])
+
+tmp=last_visit[k]
+answer_list=[k]
+while True:
+    answer_list.append(tmp)
+    tmp=last_visit[tmp]
+
+    if tmp==-1:
+        answer_list.reverse()
+        break
+print(* answer_list)
+            
+
+
+
+
