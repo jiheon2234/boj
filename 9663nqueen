@@ -1,0 +1,30 @@
+
+def check(depth):
+    for i in range(depth):
+        if dp[depth]==dp[i] or (depth-i==abs(dp[depth]-dp[i])):
+            return False
+
+    return True
+
+def dfs(depth=0):
+    global answer
+    
+    if depth==n:
+        answer+=1
+        return
+
+    for i in range(n):
+        dp[depth]=i
+        if check(depth):
+            dfs(depth+1)
+            
+    return
+    
+
+
+answer=0
+n=int(input())
+# 어떻게 되든 한 줄에 2개이상 들어갈 수 없음
+dp=[0 for _ in range(n)] #dp[i]=j  i번째 줄에 j를 놓는다.
+dfs()
+print(answer)
