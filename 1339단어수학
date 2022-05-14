@@ -1,0 +1,26 @@
+import string
+n=int(input())
+str_dict={}
+
+for _ in range(n):
+    tmp=input()
+    len_tmp=len(tmp)
+    
+    for i in range(len_tmp):
+        if tmp[i] in str_dict:
+            str_dict[tmp[i]]+=10**(len_tmp-i-1)
+        else:
+            str_dict[tmp[i]]=10**(len_tmp-i-1)
+
+
+
+tmp_list=sorted(str_dict.values(),reverse=True)
+answer=0
+for i in range(len(tmp_list)-1,-1,-1):
+    answer+=tmp_list[i]*(9-i)
+
+print(answer)
+        
+    
+
+    
