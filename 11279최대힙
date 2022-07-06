@@ -1,0 +1,54 @@
+#구현하겠다고 나대지 말고 모듈을 쓰자
+
+import sys
+input =sys.stdin.readline
+
+heap=[0]
+
+def add(x):
+    heap.append(x)
+    idx= len(heap)-1
+    while idx>1:
+        if heap[idx]>heap[idx>>1]:
+            heap[idx],heap[idx>>1]=heap[idx>>1],heap[idx]
+            idx>>=1
+
+        else: return
+
+
+
+
+def remove():
+    if len(heap)>1:
+        heap[1],heap[-1]=heap[-1],heap[1]
+        val=heap.pop()
+        heapify(1)
+    else:
+        val=0
+    return val
+
+def heapify(node):
+    l=len(heap)
+    left=node<<1
+    right = left+1
+    max_val=0
+    if left<l:
+        if right<l:
+            max_val=[left,right][heap[left]<heap[right]]
+        else:
+            max_val=left
+    
+    if max_val and heap[max_val]>heap[node]:
+        heap[node],heap[max_val]=heap[max_val],heap[node]
+        heapify(max_val)
+
+    return
+        
+
+for _ in range(int(input())):
+    x=int(input())
+    if x==0:
+        print(remove())
+
+    else:
+        add(x)
