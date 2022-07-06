@@ -1,0 +1,53 @@
+import sys
+input=sys.stdin.readline
+from collections import deque
+move=([-1,0],[1,0],[0,-1],[0,1])
+def bfs(ll):
+  
+    answer=0
+    visit=[[0 for _ in range(n)]for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if arr[i][j]>ll and not visit[i][j]:
+               
+                q=deque()
+                q.append((i,j))
+                visit[i][j]=1
+                answer+=1
+                while q:
+                    now_i,now_j=q.popleft()
+                    
+                    for a,b in move:
+                        next_i,next_j=now_i+a,now_j+b
+                        if 0<=next_i<n and 0<=next_j<n :
+                            if not visit[next_i][next_j] and arr[next_i][next_j]>ll:
+                                q.append((next_i,next_j))
+                                visit[next_i][next_j]=1
+                                #방문체크를 큐 삽입시 하지 않으면 메모리초과 
+
+    return answer
+
+
+
+
+
+       
+    
+
+
+
+answer=0
+n=int(input())
+arr=[]
+for _ in range(n):
+    arr.append(list(map(int,input().split())))
+
+
+for ll in range(100):
+
+    answer=max(answer,bfs(ll))
+
+print(answer)
+
+
+
