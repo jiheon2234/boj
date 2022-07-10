@@ -1,0 +1,54 @@
+import sys
+input=sys.stdin.readline
+
+
+n,m=map(int,input().split())
+r,c,d=map(int,input().split())
+arr=[]
+for _ in range(n):
+    arr.append([* map(int,input().split())])
+
+ddd=[[-1,0],[0,1],[1,0],[0,-1]] #방향
+
+
+def dd(d,mv=1): #방향왼쪽으로
+    d-=mv
+    if d<0:
+        d=4+d
+
+    return d
+
+cnt=0
+answer=0
+while True:
+    if arr[r][c]==0: #현재칸이 비어있다면
+        arr[r][c]='#' #청소하고
+        answer+=1 #청소한칸+=1
+
+    next_d=dd(d) #현재의 왼쪽방향
+    a,b=ddd[next_d]
+    rr,cc=r+a,c+b #왼쪽칸좌표
+    if not arr[rr][cc]: #왼쪽이 비어있다면
+        r,c=rr,cc # 다음 반복에 그 칸으로 이동
+        d=next_d # 방향바꿈
+        cnt=0 #카운트 초기화
+        continue
+    else:#왼쪽이 차있다면
+        if cnt<4: #4번이하라면,
+            d=next_d #방향만 바꿈
+            cnt+=1 #횟수올려줌
+
+        if cnt==4: #4번연속 방향만 바꿨다면
+            next_d=dd(d,2) #뒤쪽을 탐색
+            a,b=ddd[next_d]
+            rr,cc=a+r,b+c
+
+            if arr[rr][cc]==1: #벽이라면
+                break #끗
+            else: #벽이아니라면
+                cnt=0 #카운트초기화
+                r,c=rr,cc #다음반복때 들어갈 칸
+print(answer)
+            
+        
+
