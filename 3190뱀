@@ -1,0 +1,52 @@
+#https://www.acmicpc.net/problem/3190
+import sys
+input=sys.stdin.readline
+from collections import deque
+
+n=int(input())
+arr=[[0 for _ in range(n)]for _ in range(n)]
+for _ in range(int(input())):
+    a,b=map(int,input().split())
+    arr[a-1][b-1]=1
+
+info=dict() #방향변환정보
+l=int(input())
+for _ in range(l):
+    a,b=input().split()
+    info[int(a)]=b
+
+r,c=(0,0) #가로세로좌표
+dd=[[0,1],[1,0],[0,-1],[-1,0]] #보고있는방향
+d=0 #방향 (첨에오른쪽)
+t=0 #시간
+snake=deque([(0,0)]) #뱀본체
+ss=dict() #뱀위치장용
+ss[(0,0)]=1
+while True:
+    t+=1
+
+
+
+    a,b=dd[d]
+    r,c=r+a,c+b 
+    if 0<=r<n and 0<=c<n and (r,c) not in ss: #벽이나 자기자신과 부딪치지 않았다면
+        snake.append((r,c))
+        ss[(r,c)]=1
+        if not arr[r][c]: # 이동한 칸에 사과가 없다면
+            tmp=snake.popleft() #꼬리자르기
+            del(ss[tmp])        #꼬리자르기
+        else:
+            arr[r][c]=0
+
+    else: #종료
+        break
+    if t in info: #방향정보변환이 있다면
+            if info[t]=='L':
+                d-=1
+                if d<0:
+                    d=3
+            else:
+                d+=1
+                if d>3:
+                    d=0  #여기까지
+print(t)
