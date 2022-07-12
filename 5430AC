@@ -1,0 +1,42 @@
+# https://www.acmicpc.net/problem/5430
+
+import sys
+from collections import deque
+input =sys.stdin.readline
+
+
+def solve(p:str,l:deque):
+    ss=0 # 상태바 0은정상 1은 뒤집힌상태
+    for i in p:
+        if i=='R':
+            ss^=1 #0이면 1로, 1이면 0으로
+            continue
+        else: #버리는연산일경우
+            if not l: #비어있으면
+                print('error')
+                return
+
+            else:
+                if ss: #뒤집힌상태면
+                    l.pop() #뒤에서빼고
+                else: #아니면
+                    l.popleft() #앞에서뺌
+
+    if ss: l.reverse()
+    print("["+",".join(l)+"]")
+
+            
+
+t=int(input())
+for _ in range(t):
+    p=input().rstrip()
+    n=int(input())
+    arr=input().rstrip()[1:-1].split(',')
+    l=deque() if not n else deque(arr)
+    solve(p,l)
+
+
+
+
+
+
