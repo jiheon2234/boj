@@ -1,0 +1,79 @@
+#https://www.acmicpc.net/problem/16236
+import sys
+input =sys.stdin.readline
+from collections import deque
+import heapq
+move=[[-1,0],[0,-1],[0,1],[1,0]] #움직임
+n=int(input())
+Flag=False
+arr=[]
+for i in range(n):
+    tmp=[*map(int,input().split())]
+    arr.append(tmp)
+    for j in range(n):
+        if not Flag:
+            if tmp[j]==9:
+                shark=[i,j] #입력받기
+                Flag=0
+arr[shark[0]][shark[1]]=0 #상어표시된거 초기화 !중요
+size=2 #크기
+eat=0 #먹은횟수
+answer=0
+###############################################################
+def bfs(shark:list):
+    visited=[[0 for _ in range(n)] for _ in range(n)] #방문처리용
+    visited[shark[0]][shark[1]]=1 #현재있는곳방문처리
+    que=deque([[0]+shark]) #shark = x,y,t
+    heap=[] # 물고기판별용
+    tt=0
+    while que:
+        t,cx,cy=que.popleft()
+        if t!=tt: #한사이클이 돌았으면
+            tt+=1
+            if heap: #만일 물고기가있다면
+                return heapq.heappop(heap)
+                
+
+        for dx,dy in move:
+            nx,ny=cx+dx,cy+dy
+            if 0<=nx<n and 0<=ny<n and not visited[nx][ny]: #만일 조건에 맞는다면
+                visited[nx][ny]=1
+                tmp=arr[nx][ny]
+                next=[t+1,nx,ny]
+                if tmp==0 or tmp==size: #암것도없거나 똑같은 사이즈면
+                    que.append(next) #다음노드로
+                elif size>tmp: #상어가 더 크다면
+                    heapq.heappush(heap,next) #heap에 들어가기
+                    
+
+    if heap:
+        return heapq.heappop(heap)
+    return -1
+###########################################
+            
+while True:
+    res=bfs(shark) 
+    if res==-1: #더이상먹을물고기가없으면
+        print(answer) #정답출력
+        exit()
+
+    else:
+        t,x,y=res #시간,x,y
+        arr[x][y]=0
+        eat+=1 #먹은거
+        if eat==size: #크기만큼 먹었으면
+            size+=1 #크기증가
+            eat=0 #먹는거 초기화
+        answer+=t
+        shark=[x,y]
+
+
+    
+
+
+    
+
+
+    
+
+
