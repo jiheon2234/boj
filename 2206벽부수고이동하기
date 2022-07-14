@@ -1,0 +1,48 @@
+import sys
+input=sys.stdin.readline
+from collections import deque
+arr=[]
+move=[[-1,0],[1,0],[0,-1],[0,1]]
+n,m=map(int,input().split())
+if n==m==1:
+    print(1)
+    exit()
+answer=1e+8
+for _ in range(n):
+    arr.append(list(map(int,input().strip())))
+
+def bfs():
+    global answer
+    visited=[[[0 for _ in range(m)]for _ in range(n)]for _ in range(2)] #벽여부, x,y
+    visited[0][0][0]=1 #지금있는곳 1로처리
+    visited[1][0][0]=1 #지금있는곳 1로처리
+    que=deque([[0,0,0]])
+
+  
+
+    while que:
+        w,cx,cy=que.popleft()
+
+        for dx,dy in move:
+            
+            nx,ny=cx+dx,cy+dy
+            if 0<=nx<n and 0<=ny<m and not visited[w][nx][ny]: #벗어나지 않고, 방문하지 않았다면
+                if nx==n-1 and ny==m-1: #정답조건이면
+                  
+                    print(visited[w][cx][cy]+1)
+                    exit()
+                if arr[nx][ny]==1: #벽이라면
+                    if not w: #안부순상태라면
+                        visited[1][nx][ny]= visited[0][cx][cy]+1
+                        que.append((1,nx,ny))
+                    else:
+                        continue #이미 부쉈다면 못부숨
+                else:
+                    visited[w][nx][ny]=visited[w][cx][cy]+1 #벽아니라면 그냥 그상태로통과
+                    que.append((w,nx,ny))
+
+        
+bfs()
+print(-1)    
+    
+    
