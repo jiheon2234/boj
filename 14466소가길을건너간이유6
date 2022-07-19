@@ -1,0 +1,54 @@
+#https://www.acmicpc.net/problem/14466
+import sys
+from collections import deque
+input=sys.stdin.readline
+road=set()
+move=[[-1,0],[1,0],[0,-1],[0,1]]
+cow=set()
+n,k,r=map(int,input().split())
+answer=0
+arr=[[0 for _ in range(n)]for _ in range(n)]
+for _ in range(r):
+    a,b,c,d=map(lambda x: int(x)-1,input().split())
+    road.add((a,b,c,d))
+    road.add((c,d,a,b))
+
+for _ in range(k):
+    a,b=map(lambda x: int(x)-1,input().split())
+    cow.add((a,b))
+
+
+def bfs(i,j):
+    res=[0,1][(i,j)  in cow]
+    arr[i][j]=1
+    
+    q=deque([(i,j )])
+    
+    while q:
+        cx,cy=q.popleft()
+        for a,b in move:
+            nx,ny=cx+a,cy+b
+            if 0<=nx<n and 0<=ny<n and (cx,cy,nx,ny) not in road and arr[nx][ny]==0:
+                arr[nx][ny]=1
+                q.append((nx,ny))
+                if (nx,ny) in cow:
+                    res+=1
+    return res
+                
+
+    
+
+
+sec=[]
+
+for i in range(n):
+    for j in range(n):
+        if arr[i][j]==0:
+            sec.append(bfs(i,j))
+# print(sec)
+# exit()
+for i in range(len(sec)-1):
+    tmp=sec[i]
+    k-=tmp
+    answer += k*tmp
+print(answer)
