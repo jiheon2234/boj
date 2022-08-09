@@ -1,0 +1,60 @@
+# https://www.acmicpc.net/problem/9019
+from collections import deque
+import sys
+input=sys.stdin.readline
+
+
+
+def D(n:int):
+    rv=n<<1
+    if rv>9999:
+        rv%=10000
+    return rv
+
+def S(n:int):
+    rv=n-1
+    if rv==-1:
+        rv=9999
+    return rv
+
+def L(n:int):
+    a,b=divmod(n,1000) #첫자리, 나머지3자리
+    rv=(b*10)+a #세지리 값 변경, 첫자리값넣기
+    return rv
+
+def R(n:int):
+    a,b=divmod(n,10) #나머지3자리, 끝자리
+    rv=b*1000+a #앞세자리
+    return rv
+
+dd={
+    'D':D,
+    'S':S,
+    'L':L,
+    'R':R,
+}
+
+
+
+
+def bfs(start,end):
+    arr=[None for _ in range(10000)]
+    arr[start]=''
+    q=deque([start])
+
+    while q:
+        now=q.popleft()
+        for k,v in dd.items():
+            next= v(now)
+            if 0<=next<10000 and arr[next]==None:
+                arr[next]=arr[now]+k
+                q.append(next)
+                if next==end:
+                    print(arr[end])
+                    
+                    return
+    
+        
+for _ in range(int(input())):
+    start,end=map(int,input().split())
+    bfs(start,end)
