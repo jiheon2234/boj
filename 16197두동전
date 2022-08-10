@@ -1,0 +1,48 @@
+#https://www.acmicpc.net/problem/16197
+from collections import deque
+import sys
+input=sys.stdin.readline
+coins=[]
+arr=[]
+n,m=map(int,input().split())
+for i in range(n):
+    tmp=list(input().rstrip())
+    arr.append(tmp)
+    for j in range(m):
+        if tmp[j]=='o':
+            coins.append(i)
+            coins.append(j)
+
+move=[[-1,0],[1,0],[0,-1],[0,1]]
+s=set()
+q=deque()
+q.append(coins)
+s.add(tuple(coins))
+coins.append(0)
+while q:
+    cx1,cy1,cx2,cy2,w=q.popleft()
+    if w>9:
+        print(-1)
+        exit()
+    for dx,dy in move:
+        nx1,ny1,nx2,ny2=cx1+dx,cy1+dy,cx2+dx,cy2+dy
+        if (0<=nx1<n and 0<=ny1<m)^(0<=nx2<n and 0<=ny2<m): #동전중 하나만 떨어졌으면
+            print(w+1) #걸린시간출력 후 종료
+            exit()
+
+        elif (0<=nx1<n and 0<=ny1<m)and(0<=nx2<n and 0<=ny2<m): #둘다arr안에 있으면
+            if arr[nx1][ny1]=='#':#벽이면 그냥 처음으로
+                nx1,ny1=cx1,cy1
+            if arr[nx2][ny2]=='#':
+                nx2,ny2=cx2,cy2
+                
+            if (nx1,ny1,nx2,ny2) not in s:
+                q.append(( nx1,ny1,nx2,ny2,w+1))
+                s.add(( nx1,ny1,nx2,ny2))
+
+print(-1)
+        
+
+
+
+
