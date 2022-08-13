@@ -1,0 +1,23 @@
+# https://www.acmicpc.net/problem/12919
+
+s=input()
+t=input()
+
+def dfs(a:str,b:str):
+    if len(a)==len(b):
+        if a==b:
+            print(1)
+            exit()
+
+        else:
+            return
+
+    if b[-1]=='A':
+        dfs(a,b[:-1])
+
+    if b[0]=='B':
+        dfs(a,b[::-1][:-1])
+
+dfs(s,t)
+print(0)
+
