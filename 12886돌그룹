@@ -1,0 +1,44 @@
+#https://www.acmicpc.net/problem/12886
+from collections import deque
+
+a,b,c=map(int,input().split())
+total=a+b+c
+s={(a,b)} #중복처리
+if a==b==c: 
+    print(1) 
+    exit()
+if total%3!=0:
+    print(0)
+    exit()
+q=deque([[a,b,c]])
+while q:
+    a,b,c=q.popleft()
+
+    for i,j in ((a,b),(b,c),(a,c)):
+        if i==j:
+            continue
+        if i<j:
+            i,j=i*2,j-i
+        else:
+            i,j=i-j,j*2
+        
+        k=total-i-j
+        X,Y=min(i,j,k),max(i,j,k)
+        if (X,Y) not in s:
+            if i==j==k:
+                print(1)
+                exit()
+            else:
+                s.add((X, Y))
+                q.append((i,j,k))
+       
+
+print(0)    
+        
+
+
+
+
+
+
+
