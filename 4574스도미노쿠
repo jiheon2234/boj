@@ -1,0 +1,103 @@
+https://www.acmicpc.net/problem/4574
+
+import sys
+input = sys.stdin.readline
+counts=0
+def check(x,y,v):
+    for i in range(9):
+        if arr[x][i]==v:
+            return False
+        elif arr[i][y]==v:
+            return False
+
+    x=x//3*3
+    y=y//3*3
+
+    for i in range(x,x+3):
+        for j in range(y,y+3):
+            if arr[i][j]==v:
+                return False
+    return True
+
+
+def dfs(cnt=0):
+    global flag
+    if cnt>lb: #모두 탐색했다면 정답출력후 종료
+        flag=True
+        
+        for a in arr:
+            for b in a:
+                print(b,end='')
+            print()
+        return
+        
+    cx,cy=blank[cnt]
+    if arr[cx][cy]: #만일 이전에 채웠다면 다음요소 탐색
+        dfs(cnt+1)
+        return
+
+    for i in range(1,10):
+        if check(cx,cy,i):
+            arr[cx][cy]=i
+
+            for dx,dy in ((0,1),(1,0)):
+                nx,ny=cx+dx,cy+dy
+                if nx<=8 and ny<=8 and arr[nx][ny]==0 : #도미노가능
+                    for j in range(1,10):
+                        tmp=((max(i,j),min(i,j)))
+                        if tmp not in domino and check(nx,ny,j):
+                            domino.add(tmp)
+                            arr[nx][ny]=j
+                            dfs(cnt+1)
+                            if flag:
+                                return
+                            domino.remove(tmp)
+                            arr[nx][ny]=0
+        arr[cx][cy]=0
+
+while True:
+    counts+=1
+    flag=False
+    domino=set()
+    arr=[[0 for _ in range(9)] for _ in range(9)]
+    n=int(input())
+    if n==0:
+        exit()
+    else:
+        print(f'Puzzle {counts}')
+
+    for _ in range(n):
+        u,lu,v,lv=input().rstrip().split()
+        u=int(u)
+        d1,d2=ord(lu[0])-65,int(lu[1])-1
+        arr[d1][d2]=u
+        
+        d1,d2=ord(lv[0])-65,int(lv[1])-1
+        v=int(v)
+        arr[d1][d2]=v
+        domino.add((max(u,v),min(u,v)))
+    tmp=input().rstrip().split()
+    numb=1
+    for t in tmp:
+        a,b=ord(t[0])-65, int(t[1])-1
+        arr[a][b]=numb
+        numb+=1
+    ######arr만들기
+    blank=[]
+    for i in range(9):
+        for j in range(9):
+            if arr[i][j]==0:
+                blank.append((i,j))
+    lb=len(blank)-1
+    ##공백모두 리스트에 넣기
+
+
+    dfs()
+
+
+
+
+
+
+
+    
